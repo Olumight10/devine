@@ -3,674 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>THE VINE · youth directory [radiant]</title>
-  <!-- Google Font & Font Awesome for extra polish -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>THE VINE Youth Directory</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root{
+      --bg:#0b1020; --card:#121735; --accent:#6c7cff; --muted:#9aa3ff;
+      --text:#e8ebff; --soft:#1a2050; --ring:#2b33a8;
     }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,sans-serif;background:linear-gradient(180deg,#0b1020,#0d1230);color:var(--text)}
+    header{padding:24px 16px;text-align:center}
+    header h1{margin:0;font-size:clamp(1.4rem,3vw,2.2rem)}
+    header p{margin:6px auto 0;max-width:820px;color:#cfd5ff}
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at 10% 20%, #0c0b1f, #030514);
-      color: #edefff;
-      line-height: 1.5;
-      min-height: 100vh;
-      padding: 1.2rem 1rem 2rem;
-    }
+    .toolbar{display:grid;grid-template-columns:1fr;gap:10px;max-width:1100px;margin:0 auto 14px;padding:0 16px}
 
-    /* glassmorphic glow */
-    .glass-panel {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(18, 22, 48, 0.5);
-      border: 1px solid rgba(130, 150, 255, 0.15);
-      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(110, 130, 255, 0.1) inset;
-    }
+    .active-filters{display:none;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter-badge{background:#2b33a8;padding:6px 10px;border-radius:999px;font-size:.8rem}
+    .clear-btn{margin-left:auto;background:#1a2060;border:1px solid #2b33a8;color:#fff;padding:6px 12px;border-radius:10px;cursor:pointer}
 
-    /* main header */
-    .hero {
-      max-width: 1200px;
-      margin: 0 auto 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+    .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+    .filters input,.filters select{background:var(--soft);border:1px solid var(--ring);color:var(--text);padding:10px;border-radius:10px}
 
-    .hero h1 {
-      font-size: clamp(2.2rem, 7vw, 3.4rem);
-      font-weight: 700;
-      background: linear-gradient(130deg, #c6dcff, #a7b9ff, #cfb3ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    main{max-width:1200px;margin:0 auto;padding:0 16px 32px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 
-    .hero h1 i {
-      background: #283088;
-      padding: 10px;
-      border-radius: 50%;
-      font-size: 1.8rem;
-      color: white;
-      box-shadow: 0 0 18px #6f7eff;
-    }
+    .card{background:linear-gradient(180deg,var(--card),#0f1440);border:1px solid var(--ring);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+    .card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .avatar{height:180px;background:#0c1130;display:flex;align-items:center;justify-content:center}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .avatar .fallback{font-size:2.5rem;font-weight:700;color:#8f9bff}
+    .card .body{padding:12px}
+    .name{font-weight:700}
+    .meta{font-size:.9rem;color:#c7cdff;margin-top:4px}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .tag{font-size:.75rem;padding:4px 8px;border-radius:999px;background:#1a2060;border:1px solid #2b33a8}
 
-    .hero p {
-      font-size: 1.1rem;
-      color: #b5c8ff;
-      max-width: 700px;
-      border-left: 4px solid #5f7cff;
-      padding-left: 1.2rem;
-      background: rgba(20, 30, 70, 0.4);
-      border-radius: 0 20px 20px 0;
-    }
+    .sections{margin-top:26px}
+    .section{margin-top:18px}
+    .section h3{margin:0 0 8px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{padding:8px 12px;border-radius:999px;background:#11175a;border:1px dashed #2b33a8;cursor:pointer}
 
-    /* control bar – awesome blur + rounded */
-    .control-bar {
-      max-width: 1200px;
-      margin: 2rem auto 1.8rem;
-    }
-
-    .filter-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      background: rgba(8, 12, 35, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 20px 22px;
-      border-radius: 40px;
-      border: 1px solid rgba(140, 170, 255, 0.25);
-      box-shadow: 0 18px 35px -10px black;
-    }
-
-    .filter-item {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .filter-item i {
-      position: absolute;
-      left: 14px;
-      color: #97abff;
-      font-size: 0.9rem;
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    .filter-grid input,
-    .filter-grid select {
-      width: 100%;
-      background: rgba(0, 5, 20, 0.6);
-      border: 1px solid #3645a0;
-      color: white;
-      padding: 12px 16px 12px 38px;
-      border-radius: 60px;
-      font-size: 0.9rem;
-      font-weight: 400;
-      transition: 0.2s;
-      appearance: none;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    }
-
-    .filter-grid input:focus,
-    .filter-grid select:focus {
-      outline: none;
-      border-color: #8faaff;
-      box-shadow: 0 0 0 3px rgba(120, 160, 255, 0.4);
-    }
-
-    .filter-grid input::placeholder {
-      color: #b7c7ff;
-      font-weight: 300;
-      opacity: 0.7;
-    }
-
-    /* clear button – extra glossy */
-    .clear-wrapper {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 14px;
-    }
-
-    .clear-btn {
-      background: rgba(20, 30, 65, 0.7);
-      backdrop-filter: blur(10px);
-      border: 1px solid #667bff;
-      color: #e2ebff;
-      padding: 12px 30px;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      cursor: pointer;
-      transition: 0.25s;
-      box-shadow: 0 10px 14px -8px #00000070;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .clear-btn i {
-      font-size: 1.1rem;
-      color: #95adff;
-    }
-
-    .clear-btn:hover {
-      background: #28357c;
-      border-color: #a7bcff;
-      box-shadow: 0 5px 18px #3f5cff4d;
-      transform: scale(1.02);
-      color: white;
-    }
-
-    /* profile cards – COOL hover 3D */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .profile-card {
-      background: rgba(16, 20, 45, 0.8);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(110, 150, 255, 0.3);
-      border-radius: 28px;
-      overflow: hidden;
-      transition: all 0.25s cubic-bezier(0.2,0,0,1);
-      box-shadow: 0 20px 30px -18px #000000cc, 0 0 0 1px rgba(160, 180, 255, 0.2) inset;
-      cursor: pointer;
-    }
-
-    .profile-card:hover {
-      transform: translateY(-6px) scale(1.01);
-      border-color: #88a2ff;
-      box-shadow: 0 28px 40px -16px #141c4e, 0 0 0 2px rgba(170, 200, 255, 0.4) inset;
-    }
-
-    .card-avatar {
-      height: 190px;
-      background: #141d44;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background-image: radial-gradient(circle at 30% 30%, #2e3b75, #0c1030);
-    }
-
-    .card-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.9;
-      transition: 0.3s;
-    }
-
-    .profile-card:hover .card-avatar img {
-      opacity: 1;
-      transform: scale(1.02);
-    }
-
-    .fallback-badge {
-      font-size: 3rem;
-      font-weight: 700;
-      background: #1b235d;
-      width: 90px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      color: #d2dcff;
-      border: 3px solid #7b93ff;
-      box-shadow: 0 0 35px #5f7aff;
-    }
-
-    .card-content {
-      padding: 18px 15px 15px;
-    }
-
-    .card-name {
-      font-weight: 700;
-      font-size: 1.2rem;
-      letter-spacing: -0.2px;
-      background: linear-gradient(145deg, #f0f4ff, #d2daff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      display: inline-block;
-      margin-bottom: 4px;
-    }
-
-    .card-meta {
-      display: flex;
-      gap: 8px;
-      font-size: 0.85rem;
-      color: #b1c5ff;
-      margin: 6px 0 10px;
-      flex-wrap: wrap;
-    }
-
-    .badge-tag {
-      background: rgba(35, 45, 100, 0.7);
-      backdrop-filter: blur(3px);
-      border: 1px solid #4b61cf;
-      padding: 4px 12px;
-      border-radius: 50px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: #cedbff;
-    }
-
-    .chip-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .chip-group span {
-      background: #181f55;
-      border: 1px solid #4b60d0;
-      padding: 2px 12px;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 400;
-    }
-
-    /* section headings */
-    .browse-headline {
-      margin: 50px 0 20px;
-      font-size: 2rem;
-      font-weight: 600;
-      background: linear-gradient(145deg, #e8edff, #b8cbff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      border-bottom: 2px solid #384899;
-      padding-bottom: 0.3rem;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .browse-headline i {
-      font-size: 1.8rem;
-      margin-right: 12px;
-      color: #98abff;
-    }
-
-    .chips-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      max-width: 1200px;
-      margin: 0 auto 30px;
-    }
-
-    .chip-glow {
-      background: rgba(22, 30, 70, 0.7);
-      backdrop-filter: blur(6px);
-      border: 1px solid #546cdb;
-      padding: 10px 22px;
-      border-radius: 60px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #e5eeff;
-      transition: 0.15s;
-      cursor: pointer;
-      box-shadow: 0 6px 12px -8px #000;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .chip-glow i {
-      color: #aebfff;
-      font-size: 0.8rem;
-    }
-
-    .chip-glow:hover {
-      background: #263185;
-      border-color: #99b0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 16px 20px -12px #23308f;
-    }
-
-    /* modal – super clean */
-    .modal-glow {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 4, 20, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 1000;
-    }
-
-    .modal-glow.active {
-      display: flex;
-    }
-
-    .modal-card {
-      max-width: 700px;
-      width: 100%;
-      background: rgba(14, 19, 48, 0.95);
-      backdrop-filter: blur(18px);
-      border: 1px solid #5570ff;
-      border-radius: 38px;
-      box-shadow: 0 30px 50px #00000080, 0 0 0 1px #8ba2ff inset;
-      overflow: hidden;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 26px;
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    .modal-header h2 {
-      font-size: 1.9rem;
-      font-weight: 600;
-      background: linear-gradient(145deg, #ffffff, #cfdaff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .modal-close {
-      background: #1d276b;
-      border: 1px solid #6680ff;
-      color: white;
-      padding: 10px 22px;
-      border-radius: 50px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.2s;
-      font-weight: 500;
-    }
-
-    .modal-close:hover {
-      background: #3340a5;
-      border-color: #adc2ff;
-    }
-
-    .modal-detail {
-      padding: 10px 26px 26px;
-    }
-
-    .detail-row {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      padding: 12px 0;
-      border-bottom: 1px dashed #3b4890;
-    }
-
-    .detail-row strong {
-      color: #b3c6ff;
-    }
-
-    .detail-row div {
-      color: #ecf0ff;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 70px;
-      color: #95a9e6;
-      font-size: 0.95rem;
-    }
+    .modal{position:fixed;inset:0;background:rgba(5,7,30,.65);display:none;align-items:center;justify-content:center;padding:16px}
+    .modal.open{display:flex}
+    .dialog{max-width:720px;width:100%;background:linear-gradient(180deg,#12184a,#0e1440);border:1px solid var(--ring);border-radius:18px;overflow:hidden}
+    .dialog header{display:flex;gap:12px;align-items:center}
+    .dialog .content{padding:16px}
+    .dialog .row{display:grid;grid-template-columns:160px 1fr;gap:8px;padding:6px 0;border-bottom:1px dashed #2b33a8}
+    .dialog .row:last-child{border-bottom:none}
+    .close{margin-left:auto;background:#1a2060;border:1px solid #2b33a8;color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
   </style>
 </head>
 <body>
+<header>
+  <h1>THE VINE Parish — Youth Directory</h1>
+  <p>Beautiful, searchable introductions of our youths.</p>
+</header>
 
-<div class="hero">
-  <h1>
-    <i class="fas fa-seedling"></i> 
-    THE VINE · radiant youth
-  </h1>
-  <p><i class="fas fa-sparkles" style="margin-right: 8px;"></i>Glow‑up directory – tap any card for full story</p>
-</div>
-
-<div class="control-bar">
-  <div class="filter-grid glass-panel">
-    <div class="filter-item"><i class="fas fa-search"></i><input id="q" placeholder="Name" /></div>
-    <div class="filter-item"><i class="fas fa-venus-mars"></i><select id="gender"><option value="">Gender</option></select></div>
-    <div class="filter-item"><i class="fas fa-map-pin"></i><select id="location"><option value="">Location</option></select></div>
-    <div class="filter-item"><i class="fas fa-briefcase"></i><select id="workStatus"><option value="">Work status</option></select></div>
-    <div class="filter-item"><i class="fas fa-laptop"></i><select id="workType"><option value="">Work type</option></select></div>
-    <div class="filter-item"><i class="fas fa-heart"></i><select id="marital"><option value="">Marital</option></select></div>
-    <div class="filter-item"><i class="fas fa-cake-candles"></i><select id="dob"><option value="">Birth</option></select></div>
-    <div class="filter-item"><i class="fas fa-palette"></i><select id="hobby"><option value="">Hobby</option></select></div>
+<div class="toolbar">
+  <div id="activeFilters" class="active-filters">
+    <strong>Active filters:</strong>
+    <div id="filterBadges"></div>
+    <button id="clearFilters" class="clear-btn">Clear all</button>
   </div>
-  <div class="clear-wrapper">
-    <button class="clear-btn" id="clearFiltersBtn"><i class="fas fa-broom"></i> clear all filters</button>
+
+  <div class="filters">
+    <input id="q" placeholder="Search by name" />
+    <select id="gender"><option value="">Gender</option></select>
+    <select id="location"><option value="">Location</option></select>
+    <select id="workStatus"><option value="">Work status</option></select>
+    <select id="workType"><option value="">Work type</option></select>
+    <select id="marital"><option value="">Marital status</option></select>
+    <select id="dob"><option value="">Date of birth</option></select>
+    <select id="hobby"><option value="">Hobby</option></select>
   </div>
 </div>
 
 <main>
-  <div id="cards" class="cards-grid"></div>
+  <div id="cards" class="grid"></div>
 
-  <!-- browse sections with icon flair -->
-  <h2 class="browse-headline"><i class="fas fa-cake-candles"></i> browse by birth</h2>
-  <div id="sec-dob" class="chips-cloud"></div>
-
-  <h2 class="browse-headline"><i class="fas fa-paint-brush"></i> browse by hobby</h2>
-  <div id="sec-hobby" class="chips-cloud"></div>
-
-  <h2 class="browse-headline"><i class="fas fa-briefcase"></i> browse by work status</h2>
-  <div id="sec-workStatus" class="chips-cloud"></div>
-
-  <h2 class="browse-headline"><i class="fas fa-venus-mars"></i> browse by gender</h2>
-  <div id="sec-gender" class="chips-cloud"></div>
-
-  <h2 class="browse-headline"><i class="fas fa-laptop-code"></i> browse by work type</h2>
-  <div id="sec-workType" class="chips-cloud"></div>
-
-  <h2 class="browse-headline"><i class="fas fa-map-marked-alt"></i> browse by location</h2>
-  <div id="sec-location" class="chips-cloud"></div>
+  <div class="sections">
+    <div class="section"><h3>Browse by Date of Birth</h3><div id="sec-dob" class="chips"></div></div>
+    <div class="section"><h3>Browse by Hobby</h3><div id="sec-hobby" class="chips"></div></div>
+    <div class="section"><h3>Browse by Work Status</h3><div id="sec-workStatus" class="chips"></div></div>
+    <div class="section"><h3>Browse by Gender</h3><div id="sec-gender" class="chips"></div></div>
+    <div class="section"><h3>Browse by Work Type</h3><div id="sec-workType" class="chips"></div></div>
+    <div class="section"><h3>Browse by Location</h3><div id="sec-location" class="chips"></div></div>
+  </div>
 </main>
 
-<!-- MODAL awesome -->
-<div id="modal" class="modal-glow">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h2 id="m-name"></h2>
-      <button class="modal-close" id="close"><i class="fas fa-times"></i> close</button>
-    </div>
-    <div class="modal-detail" id="m-body"></div>
-  </div>
-</div>
-
-<footer>
-  <i class="fas fa-hand-holding-heart"></i> THE VINE Parish youth · where every vine tells a story
-</footer>
+<div id="modal" class="modal"><div class="dialog"><header class="content"><h3 id="m-name"></h3><button class="close" id="close">Close</button></header><div class="content" id="m-body"></div></div></div>
 
 <script>
-  const people = [{
-    name: "Alari Rosemary", nickname: "Nil", gender: "Female",
-    location: "Prince Stanley close, Rumuigbo Port Harcourt",
-    dob: "13-July", state: "Rivers state",
-    workStatus: "Working", workType: "Sales Manager",
-    hobbies: ["listening to music", "reading", "cooking"], marital: "Single"
-  }, {
-    name: "IHEJIETO PEACE UDOKAMMA", nickname: "Treasure", gender: "Female",
-    location: "corner stone ozuoba",
-    dob: "27-Feb", state: "Imo state",
-    workStatus: "Student", workType: "Still in school",
-    hobbies: ["listening to music", "acting", "reading educational books", "movies", "positive vibes"], marital: "Single"
-  }, {
-    name: "Adiela Queen", nickname: "Nil", gender: "Female",
-    location: "Port Harcourt",
-    dob: "23-Feb", state: "Rivers State",
-    workStatus: "Working", workType: "Accountant",
-    hobbies: ["Hiking", "Books", "Acting", "Singing"], marital: "Single"
-  }, {
-    name: "Pleasure Bryan Ogolo", nickname: "Nil", gender: "Male",
-    location: "17 center Street okahia estate off East west road, Mercy land Rumuigbo Port Harcourt",
-    dob: "6-Nov", state: "Rivers State",
-    workStatus: "Working", workType: "Event planning / Ushering / Industrial cleaning / Chef-in-training / Administrator",
-    hobbies: ["cooking", "politics", "tours"], marital: "Unknown"
-  }, {
-    name: "Francis oluwadare Afolabi", nickname: "Nil", gender: "Male",
-    location: "Rumukwachi",
-    dob: "6-July", state: "Osun state",
-    workStatus: "Working", workType: "Telecommunications (training / field experience)",
-    hobbies: ["watching football", "listening to music"], marital: "Single"
-  }];
+const people = [
+{name:"Alari Rosemary",nickname:"Nil",gender:"Female",location:"Prince Stanley close, Rumuigbo Port Harcourt",dob:"13-July",state:"Rivers",workStatus:"Working",workType:"Sales Manager",hobbies:["listening to music","reading","cooking"],marital:"Single"},
+{name:"IHEJIETO PEACE UDOKAMMA",nickname:"Treasure",gender:"Female",location:"corner stone ozuoba",dob:"27-Feb",state:"Imo",workStatus:"Student",workType:"Still in school",hobbies:["listening to music","acting","reading educational books","movies","positive vibes"],marital:"Single"},
+{name:"Adiela Queen",nickname:"Nil",gender:"Female",location:"Port Harcourt",dob:"23-Feb",state:"Rivers",workStatus:"Working",workType:"Accountant",hobbies:["Hiking","Books","Acting","Singing"],marital:"Single"},
+{name:"Pleasure Bryan Ogolo",nickname:"Nil",gender:"Male",location:"Rumuigbo Port Harcourt",dob:"6-Nov",state:"Rivers",workStatus:"Working",workType:"Event planning / Ushering / Cleaning / Chef",hobbies:["cooking","politics","tours"],marital:"It's complicated"},
+{name:"Francis oluwadare Afolabi",nickname:"Nil",gender:"Male",location:"Rumukwachi",dob:"6-July",state:"Osun",workStatus:"Working",workType:"Telecommunications",hobbies:["watching football","listening to music"],marital:"Single"}
+];
 
-  const cardsEl = document.getElementById('cards');
-  const modal = document.getElementById('modal');
-  const mName = document.getElementById('m-name');
-  const mBody = document.getElementById('m-body');
+const els = {
+q:document.getElementById('q'),gender:document.getElementById('gender'),location:document.getElementById('location'),
+workStatus:document.getElementById('workStatus'),workType:document.getElementById('workType'),marital:document.getElementById('marital'),
+dob:document.getElementById('dob'),hobby:document.getElementById('hobby')
+};
 
-  const els = {
-    q: document.getElementById('q'),
-    gender: document.getElementById('gender'),
-    location: document.getElementById('location'),
-    workStatus: document.getElementById('workStatus'),
-    workType: document.getElementById('workType'),
-    marital: document.getElementById('marital'),
-    dob: document.getElementById('dob'),
-    hobby: document.getElementById('hobby')
-  };
+const cards=document.getElementById('cards');
+const activeBox=document.getElementById('activeFilters');
+const badgeBox=document.getElementById('filterBadges');
 
-  const uniq = (arr) => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+const uniq=a=>[...new Set(a.flat().filter(Boolean))];
 
-  function imgFor(name) {
-    const base = name.replace(/\s+/g, '').toLowerCase();
-    return ['png', 'PNG', 'Png'].map(e => `images/${base}.${e}`);
-  }
+function imgFor(name){const base=name.replace(/\s+/g,'').toLowerCase();return [`images/${base}.png`,`images/${base}.PNG`,`images/${base}.Png`];}
 
-  function createCard(p) {
-    const card = document.createElement('div'); card.className = 'profile-card';
-    const avatarDiv = document.createElement('div'); avatarDiv.className = 'card-avatar';
-    const img = document.createElement('img');
-    const imgs = imgFor(p.name);
-    let tried = 0;
-    img.src = imgs[0];
-    img.onerror = () => {
-      tried++;
-      if (tried < imgs.length) img.src = imgs[tried];
-      else {
-        img.remove();
-        const fallback = document.createElement('div'); fallback.className = 'fallback-badge';
-        fallback.textContent = p.name.split(' ').map(s => s[0]).join('');
-        avatarDiv.appendChild(fallback);
-      }
-    };
-    avatarDiv.appendChild(img);
-    const body = document.createElement('div'); body.className = 'card-content';
-    body.innerHTML = `
-      <div class="card-name">${p.name}</div>
-      <div class="card-meta"><span><i class="fas fa-map-marker-alt" style="font-size:0.7rem;"></i> ${p.location.substring(0,20)}…</span> <span>⚥ ${p.gender}</span></div>
-      <div class="chip-group"><span class="badge-tag">${p.workStatus}</span><span class="badge-tag">❤️ ${p.marital}</span></div>
-    `;
-    card.append(avatarDiv, body);
-    card.onclick = () => openModal(p);
-    return card;
-  }
+function render(){cards.innerHTML='';people.filter(matches).forEach(p=>cards.appendChild(card(p)));updateActiveFilters();}
 
-  function openModal(p) {
-    mName.innerText = p.name;
-    mBody.innerHTML = '';
-    const fields = [
-      ['Nickname', p.nickname], ['Gender', p.gender], ['Location', p.location],
-      ['Date of Birth', p.dob], ['State', p.state], ['Work Status', p.workStatus],
-      ['Work / Business', p.workType], ['Hobbies', p.hobbies.join(', ')], ['Marital Status', p.marital]
-    ];
-    fields.forEach(([k, v]) => {
-      const row = document.createElement('div'); row.className = 'detail-row';
-      row.innerHTML = `<strong>${k}</strong><div>${v || '—'}</div>`;
-      mBody.appendChild(row);
-    });
-    modal.classList.add('active');
-  }
+function matches(p){return (!els.q.value||p.name.toLowerCase().includes(els.q.value.toLowerCase()))&&
+(!els.gender.value||p.gender===els.gender.value)&&(!els.location.value||p.location===els.location.value)&&
+(!els.workStatus.value||p.workStatus===els.workStatus.value)&&(!els.workType.value||p.workType===els.workType.value)&&
+(!els.marital.value||p.marital===els.marital.value)&&(!els.dob.value||p.dob===els.dob.value)&&
+(!els.hobby.value||p.hobbies.includes(els.hobby.value));}
 
-  document.getElementById('close').onclick = () => modal.classList.remove('active');
-  modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+function card(p){const d=document.createElement('div');d.className='card';const av=document.createElement('div');av.className='avatar';const img=document.createElement('img');let i=0;const imgs=imgFor(p.name);img.src=imgs[i];img.onerror=()=>{i++;if(i<imgs.length)img.src=imgs[i];else{img.remove();av.innerHTML=`<div class='fallback'>${p.name[0]}</div>`}};av.appendChild(img);d.appendChild(av);d.innerHTML+=`<div class='body'><div class='name'>${p.name}</div><div class='meta'>${p.gender} • ${p.location}</div></div>`;d.onclick=()=>openModal(p);return d;}
 
-  function populateFilters() {
-    const map = {
-      gender: uniq(people.map(p => p.gender)),
-      location: uniq(people.map(p => p.location)),
-      workStatus: uniq(people.map(p => p.workStatus)),
-      workType: uniq(people.map(p => p.workType)),
-      marital: uniq(people.map(p => p.marital)),
-      dob: uniq(people.map(p => p.dob)),
-      hobby: uniq(people.flatMap(p => p.hobbies))
-    };
-    Object.entries(map).forEach(([k, vals]) => {
-      const sel = els[k];
-      vals.forEach(v => { let o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
-    });
-  }
+function openModal(p){document.getElementById('m-name').textContent=p.name;document.getElementById('m-body').innerHTML=Object.entries(p).map(([k,v])=>`<div class='row'><strong>${k}</strong><div>${Array.isArray(v)?v.join(', '):v}</div></div>`).join('');document.getElementById('modal').classList.add('open');}
 
-  function matches(p) {
-    const q = els.q.value.toLowerCase().trim();
-    if (q && !p.name.toLowerCase().includes(q)) return false;
-    if (els.gender.value && p.gender !== els.gender.value) return false;
-    if (els.location.value && p.location !== els.location.value) return false;
-    if (els.workStatus.value && p.workStatus !== els.workStatus.value) return false;
-    if (els.workType.value && p.workType !== els.workType.value) return false;
-    if (els.marital.value && p.marital !== els.marital.value) return false;
-    if (els.dob.value && p.dob !== els.dob.value) return false;
-    if (els.hobby.value && !p.hobbies.includes(els.hobby.value)) return false;
-    return true;
-  }
+document.getElementById('close').onclick=()=>document.getElementById('modal').classList.remove('open');
 
-  function render() {
-    cardsEl.innerHTML = '';
-    people.filter(matches).forEach(p => cardsEl.appendChild(createCard(p)));
-  }
+function populate(){Object.entries({gender:'gender',location:'location',workStatus:'workStatus',workType:'workType',marital:'marital',dob:'dob'}).forEach(([k,id])=>uniq(people.map(p=>p[k])).forEach(v=>els[id].innerHTML+=`<option>${v}</option>`));uniq(people.map(p=>p.hobbies)).forEach(v=>els.hobby.innerHTML+=`<option>${v}</option>`);} 
 
-  Object.values(els).forEach(el => el.addEventListener('input', render));
+function updateActiveFilters(){badgeBox.innerHTML='';let c=0;Object.entries(els).forEach(([k,e])=>{if(e.value){c++;badgeBox.innerHTML+=`<span class='filter-badge'>${k}: ${e.value}</span>`}});activeBox.style.display=c?'flex':'none';}
 
-  document.getElementById('clearFiltersBtn').addEventListener('click', () => {
-    Object.values(els).forEach(el => el.value = '');
-    render();
-  });
+document.getElementById('clearFilters').onclick=()=>{Object.values(els).forEach(e=>e.value='');render();};
+Object.values(els).forEach(e=>e.oninput=render);
 
-  function buildSection(id, values, apply) {
-    const container = document.getElementById(id); container.innerHTML = '';
-    uniq(values).forEach(v => {
-      let chip = document.createElement('span'); chip.className = 'chip-glow';
-      chip.innerHTML = `<i class="fas fa-tag"></i> ${v}`;
-      chip.onclick = () => { apply(v); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-      container.appendChild(chip);
-    });
-  }
-
-  buildSection('sec-dob', people.map(p => p.dob), v => els.dob.value = v);
-  buildSection('sec-hobby', people.flatMap(p => p.hobbies), v => els.hobby.value = v);
-  buildSection('sec-workStatus', people.map(p => p.workStatus), v => els.workStatus.value = v);
-  buildSection('sec-gender', people.map(p => p.gender), v => els.gender.value = v);
-  buildSection('sec-workType', people.map(p => p.workType), v => els.workType.value = v);
-  buildSection('sec-location', people.map(p => p.location), v => els.location.value = v);
-
-  populateFilters();
-  render();
+populate();render();
 </script>
 </body>
 </html>
