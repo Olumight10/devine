@@ -448,9 +448,9 @@
 <div class="hero">
   <h1>
     <i class="fas fa-seedling"></i> 
-    THE VINE · radiant youth
+    THE VINE Youth
   </h1>
-  <p><i class="fas fa-sparkles" style="margin-right: 8px;"></i>Glow‑up directory – tap any card for full story</p>
+  <p><i class="fas fa-sparkles" style="margin-right: 8px;"></i>tap any card for full story</p>
 </div>
 
 <div class="control-bar">
@@ -508,37 +508,86 @@
 </footer>
 
 <script>
-  const people = [{
-    name: "Alari Rosemary", nickname: "Nil", gender: "Female",
-    location: "Prince Stanley close, Rumuigbo Port Harcourt",
-    dob: "13-July", state: "Rivers state",
-    workStatus: "Working", workType: "Sales Manager",
-    hobbies: ["listening to music", "reading", "cooking"], marital: "Single"
-  }, {
-    name: "IHEJIETO PEACE UDOKAMMA", nickname: "Treasure", gender: "Female",
-    location: "corner stone ozuoba",
-    dob: "27-Feb", state: "Imo state",
-    workStatus: "Student", workType: "Still in school",
-    hobbies: ["listening to music", "acting", "reading educational books", "movies", "positive vibes"], marital: "Single"
-  }, {
-    name: "Adiela Queen", nickname: "Nil", gender: "Female",
-    location: "Port Harcourt",
-    dob: "23-Feb", state: "Rivers State",
-    workStatus: "Working", workType: "Accountant",
-    hobbies: ["Hiking", "Books", "Acting", "Singing"], marital: "Single"
-  }, {
-    name: "Pleasure Bryan Ogolo", nickname: "Nil", gender: "Male",
+const people = [
+    {
+    name: "Pleasure Bryan Ogolo",
+    nickname: "Nil",
+    gender: "Male",
     location: "17 center Street okahia estate off East west road, Mercy land Rumuigbo Port Harcourt",
-    dob: "6-Nov", state: "Rivers State",
-    workStatus: "Working", workType: "Event planning / Ushering / Industrial cleaning / Chef-in-training / Administrator",
-    hobbies: ["cooking", "politics", "tours"], marital: "Unknown"
-  }, {
-    name: "Francis oluwadare Afolabi", nickname: "Nil", gender: "Male",
+    dob: "6-Nov",
+    state: "Rivers State",
+    workStatus: "Master of all trade Call me for anything (money involved ooo)",
+    workType: "Event planning/Ushering services/industrial cleaning/chef in training (home services included)/Administrator with RCCG",
+    hobbies: ["cooking", "exploring politics", "tours", "and many more"],
+    marital: "i never know which one i dey yet"
+  },{
+    name: "BASSEY EMMANUEL EDET",
+    nickname: "EMMACO",
+    gender: "Male",
+    location: "Rumuigbo",
+    dob: "22-Aug",
+    state: "AKWA-IBOM",
+    workStatus: "student",
+    workType: "student",
+    hobbies: ["listening to music with meaningful lyrics"],
+    marital: "Single"
+  },
+  {
+    name: "Alari Rosemary",
+    nickname: "Nil",
+    gender: "Female",
+    location: "Prince Stanley close, Rumuigbo Port Harcourt.",
+    dob: "13-July",
+    state: "Rivers state",
+    workStatus: "Working",
+    workType: "sales manager",
+    hobbies: ["listening to music", "reading", "cooking"],
+    marital: "Single"
+  },
+  {
+    name: "IHEJIETO PEACE UDOKAMMA",
+    nickname: "Treasure",
+    gender: "Female",
+    location: "corner stone ozuoba",
+    dob: "27-Feb",
+    state: "Imo state",
+    workStatus: "Student",
+    workType: "still in school",
+    hobbies: [
+      "listening to music",
+      "acting",
+      "reading educational books",
+      "movies",
+      "a good listener to good ideas (positive vibes only 😆😆)"
+    ],
+    marital: "Single"
+  },
+  {
+    name: "Adiela Queen",
+    nickname: "Nil",
+    gender: "Female",
+    location: "Port Harcourt",
+    dob: "23-Feb",
+    state: "Rivers State",
+    workStatus: "Working",
+    workType: "Accountant",
+    hobbies: ["Hiking", "Books", "Acting", "singing"],
+    marital: "Single"
+  },
+  {
+    name: "Francis oluwadare Afolabi",
+    nickname: "Nil",
+    gender: "Male",
     location: "Rumukwachi",
-    dob: "6-July", state: "Osun state",
-    workStatus: "Working", workType: "Telecommunications (training / field experience)",
-    hobbies: ["watching football", "listening to music"], marital: "Single"
-  }];
+    dob: "6-July",
+    state: "Osun state",
+    workStatus: "working",
+    workType: "I'm the Telecommunications sector, currently undergoing training and gaining field experience",
+    hobbies: ["watching football", "listening to music"],
+    marital: "single and searching"
+  },
+
+];
 
   const cardsEl = document.getElementById('cards');
   const modal = document.getElementById('modal');
